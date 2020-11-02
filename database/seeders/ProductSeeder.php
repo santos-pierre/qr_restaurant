@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Restaurant;
 use Illuminate\Database\Seeder;
 
-class RestaurantSeeder extends Seeder
+class ProductSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,9 +13,6 @@ class RestaurantSeeder extends Seeder
      */
     public function run()
     {
-        Restaurant::factory()
-                ->times(5)
-                ->hasProducts(15)
-                ->create();
+        //
     }
 }
