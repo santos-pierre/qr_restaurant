@@ -19,9 +19,9 @@ module.exports = {
             },
             colors: {
                 'light-gray' : '#718096',
-                'text-dark' : '#EDF2F7',
-                'text-light': '#2D3748'
-            }
+                'dark' : '#EDF2F7',
+                'light': '#2D3748'
+            },
         },
     },
     variants: {},
