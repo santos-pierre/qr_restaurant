@@ -15,8 +15,9 @@ class RestaurantSeeder extends Seeder
     public function run()
     {
         Restaurant::factory()
-                ->times(5)
-                ->hasProducts(15)
+                ->times(2)
                 ->create();
+        // $products = Restaurant::find(1)->products();
+        // $categories = Restaurant::find(1)->categories();
     }
 }

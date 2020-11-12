@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
 
 class CategorySeeder extends Seeder
@@ -15,24 +16,25 @@ class CategorySeeder extends Seeder
     public function run()
     {
         Category::factory()
-                ->create([
-                    'name' => 'starters',
-                     'slug' => 'starters'
-                ]);
+            ->hasAttached(
+                Product::factory()
+                    ->count(5)
+                    ->state(function (array $attributes) {
+                        return ['restaurant_id' => 1];
+                    }),
+            )
+            ->count(5)
+            ->create(['restaurant_id' => 1]);
+
         Category::factory()
-                ->create([
-                    'name' => 'trends',
-                    'slug' => 'trends'
-                ]);
-        Category::factory()
-                ->create([
-                    'name' => 'mains',
-                    'slug' => 'mains'
-                ]);
-        Category::factory()
-                ->create([
-                    'name' => 'desserts',
-                    'slug' => 'desserts'
-                ]);
+            ->hasAttached(
+                Product::factory()
+                    ->count(5)
+                    ->state(function (array $attributes) {
+                        return ['restaurant_id' => 2];
+                    }),
+            )
+            ->count(5)
+            ->create(['restaurant_id' => 2]);
     }
 }
