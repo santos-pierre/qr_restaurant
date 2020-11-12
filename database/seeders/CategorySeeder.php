@@ -15,26 +15,29 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        Category::factory()
-            ->hasAttached(
-                Product::factory()
-                    ->count(5)
-                    ->state(function (array $attributes) {
-                        return ['restaurant_id' => 1];
-                    }),
-            )
-            ->count(5)
-            ->create(['restaurant_id' => 1]);
+        for ($cpt=0; $cpt < 5; $cpt++) { 
+            Category::factory()
+                ->hasAttached(
+                    Product::factory()
+                        ->count(5)
+                        ->state(function (array $attributes) {
+                            return ['restaurant_id' => 1];
+                        }),
+                )
+                ->create(['restaurant_id' => 1, 'order' => $cpt]);
+        }
 
-        Category::factory()
-            ->hasAttached(
-                Product::factory()
-                    ->count(5)
-                    ->state(function (array $attributes) {
-                        return ['restaurant_id' => 2];
-                    }),
-            )
-            ->count(5)
-            ->create(['restaurant_id' => 2]);
+        for ($cpt=0; $cpt < 5; $cpt++) { 
+            Category::factory()
+                ->hasAttached(
+                    Product::factory()
+                        ->count(5)
+                        ->state(function (array $attributes) {
+                            return ['restaurant_id' => 2];
+                        }),
+                )
+                ->create(['restaurant_id' => 2, 'order' => $cpt]);
+        }
+        
     }
 }
