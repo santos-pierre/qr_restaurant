@@ -15,7 +15,7 @@ class Menu extends Component
     public function mount(Restaurant $restaurant) 
     {
         $this->restaurant = $restaurant;
-        $this->categories = $restaurant->categories->sortBy('order');
+        $this->categories = $restaurant->categories->sortBy('order')->toBase();
         $this->products = ProductMenu::where('r_id', $restaurant->id)->get()->groupBy('c_name')->toBase();
     }
 
