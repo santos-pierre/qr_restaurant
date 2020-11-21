@@ -27,7 +27,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
     </head>
 
-    <body class="dark:bg-gray-900 bg-cool-gray-50 dark:text-dark light:text-light" style="scroll-behavior: smooth">
+    <body class="dark:bg-blueGray-900 bg-coolGray-50 dark:text-coolGray-300 text-blueGray-700" style="scroll-behavior: smooth">
         @yield('body')
 
         @livewireScripts

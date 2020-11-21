@@ -1,7 +1,7 @@
 <div class="md:max-w-screen-md md:mx-auto">
     <div x-data="tabsElements($wire)">
         {{-- Header --}}
-        <div class="dark:bg-gray-900 light:bg-cool-gray-50 pt-5 fixed top-0 z-10 w-full md:max-w-screen-md">
+        <div class="dark:bg-blueGray-900 bg-coolGray-50 pt-5 fixed top-0 z-10 w-full md:max-w-screen-md">
             <div class="flex-1 min-w-0">
                 <h2 class="text-xl font-bold leading-7 sm:text-3xl sm:leading-9 sm:truncate ml-3">
                     Bienvenue chez <br> {{$restaurant->name}}
@@ -14,8 +14,8 @@
                         <div
                             @click="selectElement(category)"
                             class="text-sm py-2 px-3 block"
-                            :class="{'font-bold border-b-2 dark:border-dark light:border-light' : category.selected, 
-                                  'font-medium opacity-75 border-b-1.5 border-light-gray' : !category.selected }">
+                            :class="{'font-bold border-b-2 dark:border-coolGray-100 border-blueGray-700' : category.selected, 
+                                  'font-medium opacity-75 border-b-1.5 dark:border-coolGray-100 border-coolGray-400' : !category.selected }">
                             <span x-text="category.name"></span>
                         </div>
                     </template>
@@ -42,10 +42,10 @@
                                 <span class="font-bold text-base">
                                     {{$item->p_price}} €
                                 </span>
-                                @if (!$loop->last)
-                                    <hr class="opacity-50">
-                                @endif
                             </div>
+                            @if (!$loop->last)
+                                <hr class="opacity-50 my-2">
+                            @endif
                     @endforeach
                 @endforeach
             </div>
