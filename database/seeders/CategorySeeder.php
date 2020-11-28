@@ -15,19 +15,25 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        for ($cpt=0; $cpt < 5; $cpt++) { 
+        for ($cpt=0; $cpt < 5; $cpt++) {
             Category::factory()
                 ->hasAttached(
                     Product::factory()
                         ->count(5)
                         ->state(function (array $attributes) {
                             return ['restaurant_id' => 1];
+                        })
+                        ->afterCreating(function (Product $product) {
+                            $product
+                                ->addMedia(storage_path('demo/food.png'))
+                                ->preservingOriginal()
+                                ->toMediaCollection();
                         }),
                 )
                 ->create(['restaurant_id' => 1, 'order' => $cpt]);
         }
 
-        for ($cpt=0; $cpt < 5; $cpt++) { 
+        for ($cpt=0; $cpt < 5; $cpt++) {
             Category::factory()
                 ->hasAttached(
                     Product::factory()
@@ -38,6 +44,5 @@ class CategorySeeder extends Seeder
                 )
                 ->create(['restaurant_id' => 2, 'order' => $cpt]);
         }
-        
     }
 }
