@@ -11,6 +11,7 @@ class Menu extends Component
     public Restaurant $restaurant;
     public $products = [];
     public $filter = '';
+    public $selectedProduct = 1;
 
     public function mount(Restaurant $restaurant)
     {
@@ -20,6 +21,11 @@ class Menu extends Component
     public function loadProducts()
     {
         $this->products = Product::productByRestaurantFilterByCategory($this->restaurant->id, $this->filter);
+    }
+
+    public function selectProduct(Product $product)
+    {
+        $this->selectedProduct = $product;
     }
 
     public function sortBy($id)

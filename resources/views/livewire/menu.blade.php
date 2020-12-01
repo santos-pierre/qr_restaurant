@@ -1,4 +1,7 @@
-<div x-data class="md:max-w-screen-md md:mx-auto" >
+<div x-data = "{
+        showProduct: false
+    }"
+    class="md:max-w-screen-md md:mx-auto" >
     <div>
         {{-- Header --}}
         <div class="fixed top-0 z-10 w-full pt-5 dark:bg-blueGray-900 bg-coolGray-100 md:max-w-screen-md">
@@ -47,11 +50,83 @@
                     <x-product-tile :product='$product'/>
                 @empty
                     {{-- Loadin State --}}
-                    @foreach (range(1,5) as $game)
+                    @foreach (range(1,5) as $product)
                         <x-product-tile-skeleton/>
                     @endforeach
                 @endforelse
             </div>
         </div>
+        {{-- Modal Product --}}
+        <!-- This example requires Tailwind CSS v2.0+ -->
+        <div
+            class="fixed inset-0 z-40 overflow-hidden" x-show="showProduct">
+            <div
+                    x-show="showProduct"
+                    class="fixed inset-0 transition-opacity"
+                    aria-hidden="true"
+                    x-transition:enter="ease-out duration-300"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100 "
+                    x-transition:leave="ease-in duration-200"
+                    x-transition:leave-start="opacity-100 "
+                    x-transition:leave-end="opacity-0"
+                    >
+                    <div class="absolute inset-0 z-50 opacity-75 dark:bg-blueGray-800"></div>
+                </div>
+            <div class="absolute inset-0 overflow-hidden">
+                <section
+                    class="absolute inset-y-0 right-0 flex max-w-full"
+                    x-show="showProduct"
+                    aria-labelledby="slide-over-heading"
+                    x-transition:enter="transform transition ease-in-out duration-500 sm:duration-7000"
+                    x-transition:enter-start="translate-y-full"
+                    x-transition:enter-end="translate-y-0 "
+                    x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+                    x-transition:leave-start="translate-y-0"
+                    x-transition:leave-end="translate-y-full">
+                    <div class="flex flex-col justify-end w-screen max-w-md">
+                        <div class="flex flex-col bg-opacity-100 shadow-xl bg-blueGray-800 h-4/5">
+                            <div class="relative flex-1 px-4 mt-6 sm:px-6">
+                            <!-- Replace with your content -->
+
+                            <!-- /End replace -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        {{-- <div class="fixed inset-0 z-10 overflow-y-auto" x-show="showProduct">
+            <div class="flex items-end justify-center min-h-screen text-center">
+                <div
+                    x-on:click="showProduct = false"
+                    x-show="showProduct"
+                    class="fixed inset-0 transition-opacity"
+                    aria-hidden="true"
+                    x-transition:enter="ease-out duration-300"
+                    x-transition:enter-start="opacity-0"
+                    x-transition:enter-end="opacity-100 "
+                    x-transition:leave="ease-in duration-200"
+                    x-transition:leave-start="opacity-100 "
+                    x-transition:leave-end="opacity-0"
+                    >
+                    <div class="absolute inset-0 opacity-75 bg-blueGray-800"></div>
+                </div>
+
+                <!-- This element is to trick the browser into centering the modal contents. -->
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div
+                    x-show="showProduct"
+                    x-transition:enter="transform transition ease-in-out duration-500 sm:duration-7000"
+                    x-transition:enter-start="translate-y-full"
+                    x-transition:enter-end="translate-y-0 "
+                    x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+                    x-transition:leave-start="translate-y-0"
+                    x-transition:leave-end="translate-y-full"
+                    class="inline-block w-screen h-screen overflow-hidden text-left align-bottom transition-all transform rounded-t-lg bg-blueGray-800"
+                    role="dialog">
+                </div>
+            </div>
+        </div> --}}
     </div>
 </div>
