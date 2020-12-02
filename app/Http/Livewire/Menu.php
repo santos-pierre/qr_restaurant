@@ -11,7 +11,7 @@ class Menu extends Component
     public Restaurant $restaurant;
     public $products = [];
     public $filter = '';
-    public $selectedProduct = 1;
+    public $selectedProduct = null;
 
     public function mount(Restaurant $restaurant)
     {
