@@ -1,4 +1,8 @@
-<div class="flex space-x-3 bg-white rounded-lg shadow-sm h-25 dark:bg-blueGray-600 dark:shadow-sm" wire:key="{{$product->id}}" wire:click='selectProduct({{$product->id}})' x-on:click="showProduct = true"/>
+<div
+    class="flex space-x-3 bg-white rounded-lg shadow-sm h-25 dark:bg-blueGray-600 dark:shadow-sm"
+    wire:key="{{$product->id}}"
+    wire:click='selectProduct({{$product->id}})'
+    x-on:click="selectProduct({{$product}})"/>
     <div class="flex-none">
         <img src={{$product->getMedia()->first()->getUrl('thumb')}} class="object-fill rounded-lg rounded-r-none" alt="">
     </div>

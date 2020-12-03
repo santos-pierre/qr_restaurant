@@ -1,6 +1,4 @@
-<div x-data = "{
-        showProduct: false
-    }"
+<div x-data = "menuComponent()"
     class="md:max-w-screen-md md:mx-auto" >
     <div>
         {{-- Header --}}
@@ -97,25 +95,33 @@
                                             <div class="-mt-20">
                                                 <img src={{$selectedProduct->getMedia()->first()->getUrl()}} alt="product_image" class="mx-auto">
                                             </div>
-                                            <h1 class="font-bold text-lg text-center">{{$selectedProduct->name}}</h1>
-                                            <p class="dark:text-blueGray-300 text-blueGray-600 text-sm">{{$selectedProduct->description}}</p>
+                                            <h1 class="font-bold text-lg text-center" x-text="product.name"></h1>
+                                            <p class="dark:text-blueGray-300 text-blueGray-600 text-sm" x-text="product.description"></p>
                                         </div>
                                         <div class="mb-5 space-y-5">
                                             <div class="flex justify-center space-x-6 items-center">
-                                                <span class="rounded-full dark:bg-teal-200 bg-teal-600 p-1">
-                                                    <x-heroicon-s-minus class="dark:text-green-600 text-teal-200 h-6 w-6"/>
-                                                </span>
-                                                <span class="font-bold text-2xl ">0</span>
-                                                <span class="rounded-full dark:bg-teal-200 bg-teal-600 p-1">
-                                                    <x-heroicon-s-plus class="dark:text-green-600 text-teal-200 h-6 w-6"/>
-                                                </span>
+                                                <button
+                                                    type="button"
+                                                    class="rounded-full text-teal-200 dark:text-green-600 dark:bg-teal-200 bg-teal-600 p-1 outline-none focus:outline-none focus:ring dark:focus:ring-teal-600 focus:ring-teal-200"
+                                                    x-on:click="removeProduct($refs.removeProduct)"
+                                                    x-ref="removeProduct">
+                                                    <x-heroicon-s-minus class="h-6 w-6" />
+                                                </button>
+                                                <span class="font-bold text-2xl" x-text="product.quantity"></span>
+                                                <button
+                                                    type="button"
+                                                    class="rounded-full text-teal-200 dark:text-green-600 dark:bg-teal-200 bg-teal-600 p-1 outline-none focus:outline-none focus:ring dark:focus:ring-teal-600 focus:ring-teal-200"
+                                                    x-on:click="addProduct($refs.addProduct)"
+                                                    x-ref="addProduct">
+                                                    <x-heroicon-s-plus class="h-6 w-6" />
+                                                </button>
                                             </div>
                                             <div class="flex justify-between">
                                                 {{-- Price --}}
                                                 <div class="flex flex-col">
                                                     <span class="font-bold text-sm">Price</span>
                                                     <div class="flex items-center">
-                                                        <span class="font-bold text-lg">13.00</span>
+                                                        <span class="font-bold text-lg" x-text="product.totalPrice"></span>
                                                         <x-heroicon-s-currency-euro class="h-5 w-5"/>
                                                     </div>
                                                 </div>
@@ -137,37 +143,43 @@
                 </section>
             </div>
         </div>
-        {{-- <div class="fixed inset-0 z-10 overflow-y-auto" x-show="showProduct">
-            <div class="flex items-end justify-center min-h-screen text-center">
-                <div
-                    x-on:click="showProduct = false"
-                    x-show="showProduct"
-                    class="fixed inset-0 transition-opacity"
-                    aria-hidden="true"
-                    x-transition:enter="ease-out duration-300"
-                    x-transition:enter-start="opacity-0"
-                    x-transition:enter-end="opacity-100 "
-                    x-transition:leave="ease-in duration-200"
-                    x-transition:leave-start="opacity-100 "
-                    x-transition:leave-end="opacity-0"
-                    >
-                    <div class="absolute inset-0 opacity-75 bg-blueGray-800"></div>
-                </div>
-
-                <!-- This element is to trick the browser into centering the modal contents. -->
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div
-                    x-show="showProduct"
-                    x-transition:enter="transform transition ease-in-out duration-500 sm:duration-7000"
-                    x-transition:enter-start="translate-y-full"
-                    x-transition:enter-end="translate-y-0 "
-                    x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
-                    x-transition:leave-start="translate-y-0"
-                    x-transition:leave-end="translate-y-full"
-                    class="inline-block w-screen h-screen overflow-hidden text-left align-bottom transition-all transform rounded-t-lg bg-blueGray-800"
-                    role="dialog">
-                </div>
-            </div>
-        </div> --}}
     </div>
 </div>
+@push('scripts')
+    <script>
+        function menuComponent () {
+            return {
+                showProduct: false,
+                cart:[],
+                product: {
+                    quantity: 0,
+                    totalPrice: null,
+                },
+                selectProduct : function (product) {
+                    this.showProduct=true;
+                    this.product={...product, quantity: 0, totalPrice: 0};
+                },
+                addProduct: function (el) {
+                    let newQuantity = (this.product.quantity) + 1;
+                    let newTotalPrice = (this.product.price) * newQuantity;
+                    this.product = {
+                        ...this.product,
+                        quantity: newQuantity,
+                        totalPrice: newTotalPrice
+                    };
+                },
+                removeProduct: function (el) {
+                    if (this.product.quantity > 0) {
+                        let newQuantity = (this.product.quantity) - 1;
+                        let newTotalPrice = (this.product.price) * newQuantity;
+                        this.product = {
+                            ...this.product,
+                            quantity: newQuantity,
+                            totalPrice: newTotalPrice
+                        };
+                    }
+                }
+            }
+        }
+    </script>
+@endpush
