@@ -73,7 +73,7 @@
                 >
                     {{-- Overlay --}}
                     <div class="absolute inset-0 z-50 opacity-75 dark:bg-blueGray-800 bg-blueGray-200"></div>
-                </div>
+            </div>
             <div class="absolute inset-0 overflow-hidden">
                 <section
                     class="absolute inset-y-0 right-0 flex max-w-full"
@@ -88,48 +88,49 @@
                     <div class="flex flex-col justify-end w-screen max-w-md">
                         <div class="flex flex-col bg-opacity-100 shadow-xl dark:bg-blueGray-800 bg-blueGray-100 h-4/5">
                             @isset($selectedProduct)
-                                <div class="flex-col flex-1 px-4 mt-6 sm:px-6 space-y-10 dark:text-blueGray-100 text-blueGray-800">
+                                <div class="flex-col flex-1 px-4 mt-6 space-y-10 sm:px-6 dark:text-blueGray-100 text-blueGray-800">
                                 <!-- Replace with your content -->
-                                    <div class="flex flex-col h-full justify-between rounded-t-lg">
+                                    <div class="flex flex-col justify-between h-full rounded-t-lg">
                                         <div class="space-y-5">
                                             <div class="-mt-20">
                                                 <img src={{$selectedProduct->getMedia()->first()->getUrl()}} alt="product_image" class="mx-auto">
                                             </div>
-                                            <h1 class="font-bold text-lg text-center" x-text="product.name"></h1>
-                                            <p class="dark:text-blueGray-300 text-blueGray-600 text-sm" x-text="product.description"></p>
+                                            <h1 class="text-lg font-bold text-center" x-text="product.name"></h1>
+                                            <p class="text-sm dark:text-blueGray-300 text-blueGray-600" x-text="product.description"></p>
                                         </div>
                                         <div class="mb-5 space-y-5">
-                                            <div class="flex justify-center space-x-6 items-center">
+                                            <div class="flex items-center justify-center space-x-6">
                                                 <button
+                                                    x-bind:disabled="disabledButton"
                                                     type="button"
-                                                    class="rounded-full text-teal-200 dark:text-green-600 dark:bg-teal-200 bg-teal-600 p-1 outline-none focus:outline-none focus:ring dark:focus:ring-teal-600 focus:ring-teal-200"
-                                                    x-on:click="removeProduct($refs.removeProduct)"
+                                                    class="p-1 text-teal-200 bg-teal-600 rounded-full outline-none dark:text-green-600 dark:bg-teal-200 focus:outline-none focus:ring dark:focus:ring-teal-600 focus:ring-teal-200"
+                                                    x-on:click="removeProduct"
                                                     x-ref="removeProduct">
-                                                    <x-heroicon-s-minus class="h-6 w-6" />
+                                                    <x-heroicon-s-minus class="w-6 h-6" />
                                                 </button>
-                                                <span class="font-bold text-2xl" x-text="product.quantity"></span>
+                                                <span class="text-2xl font-bold" x-text="product.quantity"></span>
                                                 <button
                                                     type="button"
-                                                    class="rounded-full text-teal-200 dark:text-green-600 dark:bg-teal-200 bg-teal-600 p-1 outline-none focus:outline-none focus:ring dark:focus:ring-teal-600 focus:ring-teal-200"
-                                                    x-on:click="addProduct($refs.addProduct)"
+                                                    class="p-1 text-teal-200 bg-teal-600 rounded-full outline-none dark:text-green-600 dark:bg-teal-200 focus:outline-none focus:ring dark:focus:ring-teal-600 focus:ring-teal-200"
+                                                    x-on:click="addProduct"
                                                     x-ref="addProduct">
-                                                    <x-heroicon-s-plus class="h-6 w-6" />
+                                                    <x-heroicon-s-plus class="w-6 h-6" />
                                                 </button>
                                             </div>
                                             <div class="flex justify-between">
                                                 {{-- Price --}}
                                                 <div class="flex flex-col">
-                                                    <span class="font-bold text-sm">Price</span>
+                                                    <span class="text-sm font-bold">Price</span>
                                                     <div class="flex items-center">
-                                                        <span class="font-bold text-lg" x-text="product.totalPrice"></span>
-                                                        <x-heroicon-s-currency-euro class="h-5 w-5"/>
+                                                        <span class="text-lg font-bold" x-text="product.totalPrice"></span>
+                                                        <x-heroicon-s-currency-euro class="w-5 h-5"/>
                                                     </div>
                                                 </div>
                                                 {{-- Button --}}
                                                 <div>
-                                                    <button class="flex justify-center items-center bg-teal-600 px-3 py-2 space-x-3 rounded-l-md -mr-4">
-                                                        <x-heroicon-s-pencil-alt class="h-5 w-5 text-teal-50" />
-                                                        <span class="font-bold text-lg text-teal-50">Add to Order</span>
+                                                    <button x-bind:disabled="disabledButton" class="flex items-center justify-center px-3 py-2 -mr-4 space-x-3 bg-teal-600 rounded-l-md" x-on:click="addProductToOrders">
+                                                        <x-heroicon-s-pencil-alt class="w-5 h-5 text-teal-50" />
+                                                        <span class="text-lg font-bold text-teal-50">Add to Order</span>
                                                     </button>
                                                 </div>
                                             </div>
@@ -148,19 +149,22 @@
 @push('scripts')
     <script>
         function menuComponent () {
+            let defaultProduct = {
+                quantity: 0,
+                totalPrice: null,
+            }
             return {
                 showProduct: false,
-                cart:[],
-                product: {
-                    quantity: 0,
-                    totalPrice: null,
-                },
+                orders:[],
+                product: defaultProduct,
+                disabledButton : true,
                 selectProduct : function (product) {
                     this.showProduct=true;
                     this.product={...product, quantity: 0, totalPrice: 0};
                 },
-                addProduct: function (el) {
+                addProduct: function () {
                     let newQuantity = (this.product.quantity) + 1;
+                    this.disabledButton = newQuantity === 0;
                     let newTotalPrice = (this.product.price) * newQuantity;
                     this.product = {
                         ...this.product,
@@ -168,9 +172,10 @@
                         totalPrice: newTotalPrice
                     };
                 },
-                removeProduct: function (el) {
+                removeProduct: function () {
                     if (this.product.quantity > 0) {
                         let newQuantity = (this.product.quantity) - 1;
+                        this.disabledButton = newQuantity === 0;
                         let newTotalPrice = (this.product.price) * newQuantity;
                         this.product = {
                             ...this.product,
@@ -178,7 +183,15 @@
                             totalPrice: newTotalPrice
                         };
                     }
+                },
+                addProductToOrders: function () {
+                    if (this.product.quantity > 0) {
+                        this.orders = [... this.orders, this.product];
+                        this.product = defaultProduct;
+                        this.showProduct = false;
+                    }
                 }
+
             }
         }
     </script>
