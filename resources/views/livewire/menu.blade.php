@@ -42,7 +42,11 @@
                     </svg>
                 </div>
             </div>
-            <div class="mx-5 mb-5 space-y-4" wire:init='loadProducts' wire:loading.remove wire:target='sortBy'>
+            <div
+                class="mx-5 mb-10 space-y-4"
+                :class="{'mb-16' : orders.length > 0}"
+                wire:init='loadProducts'
+                wire:loading.remove wire:target='sortBy'>
                 {{-- Product --}}
                 @forelse($products as $key => $product)
                     <x-product-tile :product='$product'/>
@@ -53,101 +57,105 @@
                     @endforeach
                 @endforelse
             </div>
+            <div class="fixed bottom-0" style="display: none" x-show="orders.length > 0" x-on:click="showOrder = true">
+                <button type="button" class="inline-flex items-center justify-center w-screen px-4 py-3 text-base font-medium bg-teal-600 border border-transparent shadow-sm text-teal-50 rounded-t-md focus:outline-none active:bg-teal-400">
+                    Your Order
+                </button>
+            </div>
         </div>
         {{-- Modal Product --}}
-        <div
-            class="fixed inset-0 z-40 overflow-hidden"
-            style="display: none"
-            x-show="showProduct">
+        <x-product-modal :selectedProduct="$selectedProduct" />
+        {{-- Modal Cart --}}
+        <div class="fixed inset-0 z-40 overflow-hidden" x-show="showOrder" style="display: none">
+            <div class="absolute inset-0 overflow-hidden">
+            {{-- OverLay --}}
             <div
-                x-show="showProduct"
-                class="fixed inset-0 transition-opacity"
-                aria-hidden="true"
+                x-show="showOrder"
                 x-transition:enter="ease-out duration-300"
                 x-transition:enter-start="opacity-0"
-                x-transition:enter-end="opacity-100 "
+                x-transition:enter-end="opacity-100"
                 x-transition:leave="ease-in duration-200"
-                x-transition:leave-start="opacity-100 "
+                x-transition:leave-start="opacity-100"
                 x-transition:leave-end="opacity-0"
-                >
-                    {{-- Overlay --}}
-                    <div class="absolute inset-0 z-50 opacity-75 dark:bg-blueGray-800 bg-blueGray-200"></div>
+                class="absolute inset-0 transition-opacity bg-gray-500 bg-opacity-75"
+                aria-hidden="true">
             </div>
-            <div class="absolute inset-0 overflow-hidden">
-                <section
-                    class="absolute inset-y-0 right-0 flex max-w-full"
-                    x-show="showProduct"
-                    aria-labelledby="slide-over-heading"
-                    x-transition:enter="transform transition ease-in-out duration-500 sm:duration-7000"
-                    x-transition:enter-start="translate-y-full"
-                    x-transition:enter-end="translate-y-0 "
+            <section class="absolute inset-y-0 left-0 flex max-w-full pr-10" aria-labelledby="slide-over-heading">
+                <div
+                    x-show="showOrder"
+                    x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+                    x-transition:enter-start="translate-x-full"
+                    x-transition:enter-end="translate-x-0"
                     x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
-                    x-transition:leave-start="translate-y-0"
-                    x-transition:leave-end="translate-y-full">
-                    <div class="flex flex-col justify-end w-screen max-w-md">
-                        <div class="fixed top-4 right-4">
-                            <button class="rounded-full ring-1 dark:ring-white ring-blueGray-800 focus:outline-none" x-on:click="resetProduct">
-                                <x-heroicon-o-x class="font-bold w-7 h-7"/>
-                            </button>
+                    x-transition:leave-start="translate-x-0"
+                    x-transition:leave-end="translate-x-full"
+                    class="relative w-screen max-w-md">
+                    {{-- Close Icon --}}
+                    <div
+                        x-show="showOrder"
+                        x-transition:enter="ease-in-out duration-500"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="ease-in-out duration-500"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="absolute top-0 right-0 flex pt-4 pl-2 -mr-8 sm:-mr-10 sm:pl-4">
+                        <button class="text-gray-300 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white" x-on:click="showOrder = false">
+                            <span class="sr-only">Close panel</span>
+                            <!-- Heroicon name: x -->
+                            <x-heroicon-o-x class="font-bold w-7 h-7"/>
+                        </button>
+                    </div>
+                    <div class="flex flex-col h-full py-6 overflow-y-scroll shadow-xl bg-blueGray-100 dark:bg-blueGray-800">
+                        <div class="px-4 sm:px-6">
+                        <h2 id="slide-over-heading" class="text-lg font-bold dark:text-blueGray-100 text-blueGray-900">
+                            Your Order
+                        </h2>
                         </div>
-                        <div class="flex flex-col bg-opacity-100 shadow-xl dark:bg-blueGray-800 bg-blueGray-100 h-4/5">
-                            @isset($selectedProduct)
-                                <div class="flex-col flex-1 px-4 mt-6 space-y-10 sm:px-6 dark:text-blueGray-100 text-blueGray-800">
-                                <!-- Replace with your content -->
-                                    <div class="flex flex-col justify-between h-full rounded-t-lg">
-                                        <div class="space-y-5">
-                                            <div class="-mt-20">
-                                                <img src={{$selectedProduct->getMedia()->first()->getUrl()}} alt="product_image" class="mx-auto">
-                                            </div>
-                                            <h1 class="text-lg font-bold text-center" x-text="product.name"></h1>
-                                            <p class="text-sm dark:text-blueGray-300 text-blueGray-600" x-text="product.description"></p>
+                        <div class="relative flex-1 px-4 mt-6 sm:px-6">
+                        <!-- Replace with your content -->
+                        <div class="absolute inset-0 px-4 sm:px-6">
+                            <template x-for="(item, index) in orders" :key="item.id">
+                                <div class="flex justify-between">
+                                    {{-- Name & Quantity --}}
+                                    <div class="flex flex-col items-start space-y-2">
+                                        <div>
+                                            <span x-text="item.name" class="text-base font-semibold"></span>
                                         </div>
-                                        <div class="mb-5 space-y-5">
-                                            <div class="flex items-center justify-center space-x-6">
-                                                <button
-                                                    x-bind:disabled="disabledButton"
-                                                    type="button"
-                                                    class="p-1 text-teal-200 transition-all duration-200 ease-in-out bg-teal-600 rounded-full outline-none dark:text-green-600 dark:bg-teal-200 focus:outline-none active:ring dark:active:ring-teal-600 dark:active:bg-teal-400 active:ring-teal-200 active:bg-teal-400"
-                                                    x-on:click="removeProduct"
-                                                    x-ref="removeProduct">
-                                                    <x-heroicon-s-minus class="w-6 h-6" />
-                                                </button>
-                                                <span class="text-2xl font-bold" x-text="product.quantity"></span>
-                                                <button
-                                                    type="button"
-                                                    class="p-1 text-teal-200 transition-all duration-200 ease-in-out bg-teal-600 rounded-full outline-none dark:text-green-600 dark:bg-teal-200 focus:outline-none active:ring dark:active:ring-teal-600 dark:active:bg-teal-400 active:ring-teal-200 active:bg-teal-400"
-                                                    x-on:click="addProduct"
-                                                    x-ref="addProduct">
-                                                    <x-heroicon-s-plus class="w-6 h-6" />
-                                                </button>
-                                            </div>
-                                            <div class="flex justify-between">
-                                                {{-- Price --}}
-                                                <div class="flex flex-col">
-                                                    <span class="text-sm font-bold">Price</span>
-                                                    <div class="flex items-center">
-                                                        <span class="text-lg font-bold" x-text="product.totalPrice"></span>
-                                                        <x-heroicon-s-currency-euro class="w-5 h-5"/>
-                                                    </div>
-                                                </div>
-                                                {{-- Button --}}
-                                                <div>
-                                                    <button x-bind:disabled="disabledButton" class="flex items-center justify-center px-3 py-2 -mr-4 space-x-3 bg-teal-600 rounded-l-md focus:outline-none active:bg-teal-400" x-on:click="addProductToOrders">
-                                                        <x-heroicon-s-pencil-alt class="w-5 h-5 text-teal-50" />
-                                                        <span class="text-lg font-bold text-teal-50">Add to Order</span>
-                                                    </button>
-                                                </div>
-                                            </div>
+                                        <div class="flex items-center justify-center space-x-2">
+                                            <button
+                                                x-bind:disabled="disabledButton"
+                                                type="button"
+                                                class="text-teal-200 transition-all duration-200 ease-in-out rounded-full outline-none dark:text-green-600 focus:outline-none active:ring dark:active:ring-teal-600 active:ring-teal-200 active:bg-teal-400"
+                                                x-ref="removeProduct">
+                                                <x-heroicon-s-minus class="w-5 h-5" />
+                                            </button>
+                                            <span class="font-medium dark:text-coolGray-100 text-blueGray-800" x-text="item.quantity"></span>
+                                            <button
+                                                type="button"
+                                                class="text-teal-200 transition-all duration-200 ease-in-out rounded-full outline-none dark:text-green-600 focus:outline-none active:ring dark:active:ring-teal-600 active:ring-teal-200 active:bg-teal-400"
+                                                x-ref="addProduct">
+                                                <x-heroicon-s-plus class="w-5 h-5" />
+                                            </button>
                                         </div>
                                     </div>
-                                <!-- /End replace -->
+                                    {{-- Price & Delete --}}
+                                    <div>
+                                        <div>
+                                            <span x-text="item.totalPrice" class="font-bold dark:text-teal-400"></span>
+                                        </div>
+                                    </div>
                                 </div>
-                            @endisset
+                            </template>
+                        </div>
+                        <!-- /End replace -->
                         </div>
                     </div>
-                </section>
+                </div>
+            </section>
             </div>
         </div>
+
     </div>
 </div>
 @push('scripts')
@@ -155,16 +163,22 @@
         function menuComponent () {
             let defaultProduct = {
                 quantity: 0,
-                totalPrice: null,
+                totalPrice: 0,
             }
             return {
                 showProduct: false,
+                showOrder: false,
                 orders:[],
                 product: defaultProduct,
                 disabledButton : true,
                 selectProduct : function (product) {
                     this.showProduct=true;
-                    this.product = {...product, quantity: 0, totalPrice: 0};
+                    let found = this.orders.find(element => element.id === product.id);
+                    if (found) {
+                        this.product = found;
+                    }else{
+                        this.product = {...product, quantity: 0, totalPrice: 0};
+                    }
                 },
                 resetProduct: function () {
                     this.showProduct = false;
@@ -193,10 +207,15 @@
                     }
                 },
                 addProductToOrders: function () {
+                    let productIndex = this.orders.findIndex(element => element.id === this.product.id);
                     if (this.product.quantity > 0) {
-                        this.orders = [... this.orders, this.product];
-                        this.product = defaultProduct;
+                        if (productIndex !== -1) {
+                            this.orders[productIndex] = this.product;
+                        }else{
+                            this.orders = [... this.orders, this.product];
+                        }
                         this.showProduct = false;
+                        this.product= defaultProduct;
                     }
                 }
 
