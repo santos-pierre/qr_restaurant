@@ -28,7 +28,13 @@ module.exports = {
             }
         }
     },
-    variants: {},
+    variants: {
+        extend: {
+            backgroundColor: ['active'],
+            ringWidth: ['active'],
+            ringColor: ['hover', 'active']
+        }
+    },
     purge: {
         content: [
             './app/**/*.php',

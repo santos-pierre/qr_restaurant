@@ -55,7 +55,6 @@
             </div>
         </div>
         {{-- Modal Product --}}
-        <!-- This example requires Tailwind CSS v2.0+ -->
         <div
             class="fixed inset-0 z-40 overflow-hidden"
             style="display: none"
@@ -86,6 +85,11 @@
                     x-transition:leave-start="translate-y-0"
                     x-transition:leave-end="translate-y-full">
                     <div class="flex flex-col justify-end w-screen max-w-md">
+                        <div class="fixed top-4 right-4">
+                            <button class="rounded-full ring-1 dark:ring-white ring-blueGray-800 focus:outline-none" x-on:click="resetProduct">
+                                <x-heroicon-o-x class="font-bold w-7 h-7"/>
+                            </button>
+                        </div>
                         <div class="flex flex-col bg-opacity-100 shadow-xl dark:bg-blueGray-800 bg-blueGray-100 h-4/5">
                             @isset($selectedProduct)
                                 <div class="flex-col flex-1 px-4 mt-6 space-y-10 sm:px-6 dark:text-blueGray-100 text-blueGray-800">
@@ -103,7 +107,7 @@
                                                 <button
                                                     x-bind:disabled="disabledButton"
                                                     type="button"
-                                                    class="p-1 text-teal-200 bg-teal-600 rounded-full outline-none dark:text-green-600 dark:bg-teal-200 focus:outline-none focus:ring dark:focus:ring-teal-600 focus:ring-teal-200"
+                                                    class="p-1 text-teal-200 transition-all duration-200 ease-in-out bg-teal-600 rounded-full outline-none dark:text-green-600 dark:bg-teal-200 focus:outline-none active:ring dark:active:ring-teal-600 dark:active:bg-teal-400 active:ring-teal-200 active:bg-teal-400"
                                                     x-on:click="removeProduct"
                                                     x-ref="removeProduct">
                                                     <x-heroicon-s-minus class="w-6 h-6" />
@@ -111,7 +115,7 @@
                                                 <span class="text-2xl font-bold" x-text="product.quantity"></span>
                                                 <button
                                                     type="button"
-                                                    class="p-1 text-teal-200 bg-teal-600 rounded-full outline-none dark:text-green-600 dark:bg-teal-200 focus:outline-none focus:ring dark:focus:ring-teal-600 focus:ring-teal-200"
+                                                    class="p-1 text-teal-200 transition-all duration-200 ease-in-out bg-teal-600 rounded-full outline-none dark:text-green-600 dark:bg-teal-200 focus:outline-none active:ring dark:active:ring-teal-600 dark:active:bg-teal-400 active:ring-teal-200 active:bg-teal-400"
                                                     x-on:click="addProduct"
                                                     x-ref="addProduct">
                                                     <x-heroicon-s-plus class="w-6 h-6" />
@@ -128,7 +132,7 @@
                                                 </div>
                                                 {{-- Button --}}
                                                 <div>
-                                                    <button x-bind:disabled="disabledButton" class="flex items-center justify-center px-3 py-2 -mr-4 space-x-3 bg-teal-600 rounded-l-md" x-on:click="addProductToOrders">
+                                                    <button x-bind:disabled="disabledButton" class="flex items-center justify-center px-3 py-2 -mr-4 space-x-3 bg-teal-600 rounded-l-md focus:outline-none active:bg-teal-400" x-on:click="addProductToOrders">
                                                         <x-heroicon-s-pencil-alt class="w-5 h-5 text-teal-50" />
                                                         <span class="text-lg font-bold text-teal-50">Add to Order</span>
                                                     </button>
@@ -160,7 +164,11 @@
                 disabledButton : true,
                 selectProduct : function (product) {
                     this.showProduct=true;
-                    this.product={...product, quantity: 0, totalPrice: 0};
+                    this.product = {...product, quantity: 0, totalPrice: 0};
+                },
+                resetProduct: function () {
+                    this.showProduct = false;
+                    this.product = defaultProduct;
                 },
                 addProduct: function () {
                     let newQuantity = (this.product.quantity) + 1;

@@ -25,7 +25,11 @@ class Menu extends Component
 
     public function selectProduct(Product $product)
     {
-        $this->selectedProduct = $product;
+        if ($product) {
+            $this->selectedProduct = $product;
+        } else {
+            $this->selectedProduct = null;
+        }
     }
 
     public function sortBy($id)
