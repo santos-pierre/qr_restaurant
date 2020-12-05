@@ -1,4 +1,5 @@
-<div x-data = "menuComponent()"
+<div
+    x-data = "menuComponent()"
     class="md:max-w-screen-md md:mx-auto" >
     <div>
         {{-- Header --}}
@@ -58,7 +59,7 @@
                 @endforelse
             </div>
             <div class="fixed bottom-0" style="display: none" x-show="orders.length > 0" x-on:click="showOrder = true">
-                <button type="button" class="inline-flex items-center justify-center w-screen px-4 py-3 text-base font-medium bg-teal-600 border border-transparent shadow-sm text-teal-50 rounded-t-md focus:outline-none active:bg-teal-400">
+                <button type="button" class="inline-flex items-center justify-center w-screen px-4 py-3 text-lg font-bold bg-teal-600 border border-transparent shadow-sm text-teal-50 rounded-t-md focus:outline-none active:bg-teal-400">
                     Your Order
                 </button>
             </div>
@@ -101,53 +102,77 @@
                         x-transition:leave-end="opacity-0"
                         class="absolute top-0 right-0 flex pt-4 pl-2 -mr-8 sm:-mr-10 sm:pl-4">
                         <button class="text-gray-300 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white" x-on:click="showOrder = false">
-                            <span class="sr-only">Close panel</span>
-                            <!-- Heroicon name: x -->
                             <x-heroicon-o-x class="font-bold w-7 h-7"/>
                         </button>
                     </div>
-                    <div class="flex flex-col h-full py-6 overflow-y-scroll shadow-xl bg-blueGray-100 dark:bg-blueGray-800">
+                    <div class="flex flex-col h-full pt-6 overflow-y-scroll shadow-xl bg-blueGray-100 dark:bg-blueGray-800">
                         <div class="px-4 sm:px-6">
-                        <h2 id="slide-over-heading" class="text-lg font-bold dark:text-blueGray-100 text-blueGray-900">
+                        <h2 id="slide-over-heading" class="text-xl font-bold dark:text-blueGray-100 text-blueGray-900">
                             Your Order
                         </h2>
                         </div>
-                        <div class="relative flex-1 px-4 mt-6 sm:px-6">
+                        <div class="relative flex-1 mt-6">
                         <!-- Replace with your content -->
-                        <div class="absolute inset-0 px-4 sm:px-6">
-                            <template x-for="(item, index) in orders" :key="item.id">
-                                <div class="flex justify-between">
-                                    {{-- Name & Quantity --}}
-                                    <div class="flex flex-col items-start space-y-2">
-                                        <div>
-                                            <span x-text="item.name" class="text-base font-semibold"></span>
-                                        </div>
-                                        <div class="flex items-center justify-center space-x-2">
-                                            <button
-                                                x-bind:disabled="disabledButton"
-                                                type="button"
-                                                class="text-teal-200 transition-all duration-200 ease-in-out rounded-full outline-none dark:text-green-600 focus:outline-none active:ring dark:active:ring-teal-600 active:ring-teal-200 active:bg-teal-400"
-                                                x-ref="removeProduct">
-                                                <x-heroicon-s-minus class="w-5 h-5" />
-                                            </button>
-                                            <span class="font-medium dark:text-coolGray-100 text-blueGray-800" x-text="item.quantity"></span>
-                                            <button
-                                                type="button"
-                                                class="text-teal-200 transition-all duration-200 ease-in-out rounded-full outline-none dark:text-green-600 focus:outline-none active:ring dark:active:ring-teal-600 active:ring-teal-200 active:bg-teal-400"
-                                                x-ref="addProduct">
-                                                <x-heroicon-s-plus class="w-5 h-5" />
-                                            </button>
-                                        </div>
+                            <div class="absolute inset-0  space-y-3">
+                                <div class="flex flex-col h-full justify-between">
+                                    <div class="h-full">
+                                        <template x-for="(item, index) in orders" :key="item.id">
+                                            <div class="flex justify-between px-4">
+                                                {{-- Name & Quantity --}}
+                                                <div class="flex flex-col items-start space-y-2">
+                                                    <div>
+                                                        <span x-text="item.name" class="text-base font-semibold dark:text-blueGray-100 text-blueGray-900"></span>
+                                                    </div>
+                                                    <div class="flex items-center justify-center space-x-2">
+                                                        <button
+                                                            type="button"
+                                                            class="text-teal-400 transition-all duration-200 ease-in-out rounded-full outline-none dark:text-green-600 focus:outline-none active:ring dark:active:ring-teal-600 active:ring-teal-200 active:bg-teal-400"
+                                                            x-on:click="removeProductQuantityOrder(item.id)">
+                                                            <x-heroicon-s-minus class="w-5 h-5" />
+                                                        </button>
+                                                        <span class="font-medium dark:text-blueGray-100 text-blueGray-900" x-text="item.quantity"></span>
+                                                        <button
+                                                            type="button"
+                                                            class="text-teal-400 transition-all duration-200 ease-in-out rounded-full outline-none dark:text-green-600 focus:outline-none active:ring dark:active:ring-teal-600 active:ring-teal-200 active:bg-teal-400"
+                                                            x-on:click="addProductQuantityOrder(item.id)">
+                                                            <x-heroicon-s-plus class="w-5 h-5" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                {{-- Price & Delete --}}
+                                                <div class="flex flex-col items-end space-y-2">
+                                                    <div class="dark:text-teal-400 text-teal-600">
+                                                        <span x-text="item.totalPrice" class="font-bold mr-1"></span>
+                                                        <span class="font-bold">€</span>
+                                                    </div>
+                                                    <div>
+                                                        <button
+                                                            class="text-blueGray-900 dark:text-blueGray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                                            x-on:click="deleteProductFromOrder(item.id)">
+                                                            <x-heroicon-o-trash class="font-bold w-7 h-7" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
                                     </div>
-                                    {{-- Price & Delete --}}
-                                    <div>
-                                        <div>
-                                            <span x-text="item.totalPrice" class="font-bold dark:text-teal-400"></span>
+                                    <div class="flex flex-col space-y-8">
+                                        <div class="space-y-1 px-4 dark:text-blueGray-100 text-blueGray-900">
+                                            <hr class="mx-3 my-2 text-blueGray-600 opacity-75">
+                                            <span class="inline-block font-medium opacity-50 text-lg">Total</span>
+                                            <div class="text-xl">
+                                                <span x-text="orderPriceTotal" class="font-bold mr-1"></span>
+                                                <span class="font-bold">€</span>
+                                            </div>
+                                        </div>
+                                        <div >
+                                            <button type="button" class="inline-flex items-center justify-center w-full px-4 py-3 text-lg font-bold bg-teal-600 border border-transparent shadow-sm text-teal-50 rounded-t-md focus:outline-none active:bg-teal-400">
+                                                Proceed to Payment
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                            </template>
-                        </div>
+                            </div>
                         <!-- /End replace -->
                         </div>
                     </div>
@@ -161,6 +186,7 @@
 @push('scripts')
     <script>
         function menuComponent () {
+            const reducer = (accumulator, currentValue) => Number(accumulator) + Number(currentValue.totalPrice);
             let defaultProduct = {
                 quantity: 0,
                 totalPrice: 0,
@@ -169,6 +195,7 @@
                 showProduct: false,
                 showOrder: false,
                 orders:[],
+                orderPriceTotal: 0,
                 product: defaultProduct,
                 disabledButton : true,
                 selectProduct : function (product) {
@@ -184,10 +211,11 @@
                     this.showProduct = false;
                     this.product = defaultProduct;
                 },
+                // Product Modal Functions
                 addProduct: function () {
                     let newQuantity = (this.product.quantity) + 1;
                     this.disabledButton = newQuantity === 0;
-                    let newTotalPrice = (this.product.price) * newQuantity;
+                    let newTotalPrice = ((this.product.price) * newQuantity).toFixed(2);
                     this.product = {
                         ...this.product,
                         quantity: newQuantity,
@@ -198,7 +226,7 @@
                     if (this.product.quantity > 0) {
                         let newQuantity = (this.product.quantity) - 1;
                         this.disabledButton = newQuantity === 0;
-                        let newTotalPrice = (this.product.price) * newQuantity;
+                        let newTotalPrice = ((this.product.price) * newQuantity).toFixed(2);
                         this.product = {
                             ...this.product,
                             quantity: newQuantity,
@@ -216,9 +244,37 @@
                         }
                         this.showProduct = false;
                         this.product= defaultProduct;
+                        this.orderPriceTotal = this.calcOrderPrice();
                     }
+                },
+                // Order Modal Function
+                addProductQuantityOrder: function (productId) {
+                    let product = this.orders.find((element) => element.id === productId);
+                    let productIndex = this.orders.findIndex((element) => element.id === productId);
+                    product.quantity = product.quantity + 1;
+                    product.totalPrice = (product.quantity * product.price).toFixed(2);
+                    this.orders[productIndex] = product;
+                    this.orderPriceTotal = this.calcOrderPrice();
+                },
+                removeProductQuantityOrder: function (productId) {
+                    let product = this.orders.find((element) => element.id === productId);
+                    let productIndex = this.orders.findIndex((element) => element.id === productId);
+                    product.quantity = product.quantity - 1;
+                    if (product.quantity === 0) {
+                        this.orders = this.orders.filter((element) => element.id !== productId);
+                    }else{
+                        product.totalPrice = (product.quantity * product.price).toFixed(2);
+                        this.orders[productIndex] = product;
+                        this.orderPriceTotal = this.calcOrderPrice();
+                    }
+                },
+                deleteProductFromOrder : function (productId) {
+                    this.orders = this.orders.filter((element) => element.id !== productId);
+                    this.orderPriceTotal = this.calcOrderPrice();
+                },
+                calcOrderPrice: function () {
+                    return this.orders.reduce(reducer,0);
                 }
-
             }
         }
     </script>

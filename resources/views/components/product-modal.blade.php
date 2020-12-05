@@ -63,7 +63,7 @@
                                             type="button"
                                             class="p-1 text-teal-200 transition-all duration-200 ease-in-out bg-teal-600 rounded-full outline-none dark:text-green-600 dark:bg-teal-200 focus:outline-none active:ring dark:active:ring-teal-600 dark:active:bg-teal-400 active:ring-teal-200 active:bg-teal-400"
                                             x-on:click="removeProduct"
-                                            x-ref="removeProduct">
+                                            >
                                             <x-heroicon-s-minus class="w-6 h-6" />
                                         </button>
                                         <span class="text-2xl font-bold" x-text="product.quantity"></span>
@@ -71,7 +71,7 @@
                                             type="button"
                                             class="p-1 text-teal-200 transition-all duration-200 ease-in-out bg-teal-600 rounded-full outline-none dark:text-green-600 dark:bg-teal-200 focus:outline-none active:ring dark:active:ring-teal-600 dark:active:bg-teal-400 active:ring-teal-200 active:bg-teal-400"
                                             x-on:click="addProduct"
-                                            x-ref="addProduct">
+                                            >
                                             <x-heroicon-s-plus class="w-6 h-6" />
                                         </button>
                                     </div>
