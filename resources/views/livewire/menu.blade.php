@@ -113,8 +113,8 @@
                         </div>
                         <div class="relative flex-1 mt-6">
                         <!-- Replace with your content -->
-                            <div class="absolute inset-0  space-y-3">
-                                <div class="flex flex-col h-full justify-between">
+                            <div class="absolute inset-0 space-y-3">
+                                <div class="flex flex-col justify-between h-full">
                                     <div class="h-full">
                                         <template x-for="(item, index) in orders" :key="item.id">
                                             <div class="flex justify-between px-4">
@@ -141,13 +141,13 @@
                                                 </div>
                                                 {{-- Price & Delete --}}
                                                 <div class="flex flex-col items-end space-y-2">
-                                                    <div class="dark:text-teal-400 text-teal-600">
-                                                        <span x-text="item.totalPrice" class="font-bold mr-1"></span>
+                                                    <div class="text-teal-600 dark:text-teal-400">
+                                                        <span x-text="item.totalPrice" class="mr-1 font-bold"></span>
                                                         <span class="font-bold">€</span>
                                                     </div>
                                                     <div>
                                                         <button
-                                                            class="text-blueGray-900 dark:text-blueGray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                                            class="rounded-md text-blueGray-900 dark:text-blueGray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                                             x-on:click="deleteProductFromOrder(item.id)">
                                                             <x-heroicon-o-trash class="font-bold w-7 h-7" />
                                                         </button>
@@ -157,11 +157,11 @@
                                         </template>
                                     </div>
                                     <div class="flex flex-col space-y-8">
-                                        <div class="space-y-1 px-4 dark:text-blueGray-100 text-blueGray-900">
-                                            <hr class="mx-3 my-2 text-blueGray-600 opacity-75">
-                                            <span class="inline-block font-medium opacity-50 text-lg">Total</span>
+                                        <div class="px-4 space-y-1 dark:text-blueGray-100 text-blueGray-900">
+                                            <hr class="mx-3 my-2 opacity-75 text-blueGray-600">
+                                            <span class="inline-block text-lg font-medium opacity-50">Total</span>
                                             <div class="text-xl">
-                                                <span x-text="orderPriceTotal" class="font-bold mr-1"></span>
+                                                <span x-text="orderPriceTotal" class="mr-1 font-bold"></span>
                                                 <span class="font-bold">€</span>
                                             </div>
                                         </div>
@@ -273,7 +273,7 @@
                     this.orderPriceTotal = this.calcOrderPrice();
                 },
                 calcOrderPrice: function () {
-                    return this.orders.reduce(reducer,0);
+                    return Number(this.orders.reduce(reducer,0)).toFixed(2);
                 }
             }
         }
