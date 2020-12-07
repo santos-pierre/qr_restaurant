@@ -156,7 +156,7 @@
                                             </div>
                                         </template>
                                     </div>
-                                    <div class="flex flex-col space-y-8">
+                                    <div class="flex items-center justify-between my-6">
                                         <div class="px-4 space-y-1 dark:text-blueGray-100 text-blueGray-900">
                                             <span class="inline-block text-lg font-medium opacity-50">Total</span>
                                             <div class="text-xl">
@@ -165,9 +165,13 @@
                                             </div>
                                         </div>
                                         <div >
-                                            <button type="button" class="inline-flex items-center justify-center w-full px-4 py-3 text-lg font-bold bg-teal-600 border border-transparent shadow-sm text-teal-50 rounded-t-md focus:outline-none active:bg-teal-400">
-                                                Proceed to Payment
-                                            </button>
+                                            <div>
+                                                <button
+                                                    class="flex items-center justify-center px-3 py-2 space-x-3 bg-teal-600 rounded-l-md focus:outline-none active:bg-teal-400">
+                                                    <x-heroicon-o-credit-card class="w-5 h-5 text-teal-50" />
+                                                    <span class="text-lg font-bold text-teal-50">Proceed to Payment</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
