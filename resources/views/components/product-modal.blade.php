@@ -1,6 +1,6 @@
 <div
     class="fixed inset-0 z-40 overflow-hidden"
-    style="display: none"
+    x-cloak
     x-show="showProduct">
     <div
         x-show="showProduct"

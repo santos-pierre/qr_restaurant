@@ -58,7 +58,7 @@
                     @endforeach
                 @endforelse
             </div>
-            <div class="fixed bottom-0" style="display: none" x-show="orders.length > 0" x-on:click="showOrder = true">
+            <div class="fixed bottom-0" x-cloak x-show="orders.length > 0" x-on:click="showOrder = true">
                 <button type="button" class="inline-flex items-center justify-center w-screen px-4 py-3 text-lg font-bold bg-teal-600 border border-transparent shadow-sm text-teal-50 rounded-t-md focus:outline-none active:bg-teal-400">
                     Your Order
                 </button>
@@ -67,7 +67,7 @@
         {{-- Modal Product --}}
         <x-product-modal :selectedProduct="$selectedProduct" />
         {{-- Modal Cart --}}
-        <div class="fixed inset-0 z-40 overflow-hidden" x-show="showOrder" style="display: none">
+        <div class="fixed inset-0 z-40 overflow-hidden" x-show="showOrder" x-cloak>
             <div class="absolute inset-0 overflow-hidden">
             {{-- OverLay --}}
             <div
@@ -115,7 +115,7 @@
                         <!-- Replace with your content -->
                             <div class="absolute inset-0 space-y-3">
                                 <div class="flex flex-col justify-between h-full">
-                                    <div class="h-full">
+                                    <div class="h-full space-y-5 overflow-y-scroll dark:scrollGradientDark scrollGradient">
                                         <template x-for="(item, index) in orders" :key="item.id">
                                             <div class="flex justify-between px-4">
                                                 {{-- Name & Quantity --}}
@@ -158,7 +158,6 @@
                                     </div>
                                     <div class="flex flex-col space-y-8">
                                         <div class="px-4 space-y-1 dark:text-blueGray-100 text-blueGray-900">
-                                            <hr class="mx-3 my-2 opacity-75 text-blueGray-600">
                                             <span class="inline-block text-lg font-medium opacity-50">Total</span>
                                             <div class="text-xl">
                                                 <span x-text="orderPriceTotal" class="mr-1 font-bold"></span>
