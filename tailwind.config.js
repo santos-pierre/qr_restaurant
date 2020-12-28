@@ -53,5 +53,5 @@ module.exports = {
             whitelistPatterns: [/-active$/, /-enter$/, /-leave-to$/, /show$/]
         }
     },
-    plugins: []
+    plugins: [require('@tailwindcss/forms')]
 };

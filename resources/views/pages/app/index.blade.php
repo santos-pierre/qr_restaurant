@@ -1,6 +1,5 @@
 @extends('layouts.app')
 
 @section('body')
-    <livewire:menu :restaurant="$restaurant"/>
+    <livewire:app.menu :restaurant="$restaurant"/>
 @endsection
-
